@@ -12,7 +12,7 @@ class ClientController extends AbstractController
 {
     #[Route('/', name: 'app_client_accueil')]
     public function index(ManagerRegistry $doctrine): Response
-    {
+    { die('test1');
         $articles = $doctrine->getRepository(Articles::class)->findAll();
 
         if (!$articles) {
