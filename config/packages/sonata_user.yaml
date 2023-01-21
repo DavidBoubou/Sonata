@@ -1,11 +1,9 @@
-# config/packages/sonata_user.yaml
-
 sonata_user:
     #switch authentification (if true see security.yaml)
     
-    #acl:
-    #    security_acl: false
-    #    connection: default
+    
+    security_acl: false
+    #connection: default
 
     manager_type: orm # can be orm or mongodb
     #mailer: custom.mailer.service.id
@@ -16,7 +14,7 @@ sonata_user:
         parameters: { path: / }
 
     class:
-        user:  Sonata\UserBundle\Entity\BaseUser  #App\Entity\UserSonata or the extends Sonata\UserBundle\Entity\BaseUser
+        user:  App\Entity\UserSonata  #App\Entity\UserSonata or the extends Sonata\UserBundle\Entity\BaseUser
 
     admin: # Admin Classes
         user:
@@ -32,5 +30,5 @@ sonata_user:
     resetting: # Reset password configuration (must be configured)
         email:
             template: '@SonataUser/Admin/Security/Resetting/email.html.twig'
-            address: sonata@localhost
+            address: noreply@gmail.com
             sender_name:  Sonata Admin

@@ -2,14 +2,14 @@ security:
     #acl:
     # connection: default
     enable_authenticator_manager: true
-    # hiérarchie des roeles
+    # hiérarchie des roles
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER, ROLE_SONATA_ADMIN]
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH,ROLE_USER, ROLE_SONATA_ADMIN, SONATA]
-
         SONATA:
             - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT # if you are not using acl then this line must be uncommented
             - ROLE_SONATA_PAGE_ADMIN_BLOCK_EDIT
+
     #Liste des hasher de mot de passe Sonata et Security
     password_hashers:
         Sonata\UserBundle\Model\UserInterface: auto
@@ -35,12 +35,36 @@ security:
     #    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # Listes des firewalls (parfeu)
     firewalls:
-        #dev:
-        #    pattern: ^/(_(profiler|wdt)|css|images|js)/
-        #    security: false
 
-        # Firewall for my client
+        # firewal for my admin with Sonata
         main:
+            switch_user: true
+            lazy: true
+            pattern: /admin(.*)
+            context: user
+            provider: sonata_user_bundle
+            form_login:
+                login_path: app_admin_login #app_admin_login sonata_user_admin_security_login
+                check_path: app_admin_login #app_login_client sonata_user_admin_security_check
+                default_target_path: sonata_admin_dashboard
+            logout:
+                path: app_admin_logout #app_admin_logout  sonata_user_admin_security_logout
+                target: app_admin_login #app_admin_login sonata_user_admin_security_login
+            remember_me:
+                secret: '%env(APP_SECRET)%'
+                lifetime: 2629746
+                path: /admin
+            entry_point: App\Security\UserSonataAuthenticator
+            custom_authenticator: App\Security\UserSonataAuthenticator
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+        # Firewall for client side
+        client:
             lazy: true
             pattern: /
             provider: app_user_provider
@@ -55,34 +79,6 @@ security:
                 # where to redirect after logout
                 target: app_client_accueil
 
-
-
-        # firewal for my admin with Sonata
-        admin:
-            switch_user: true
-            lazy: true
-            pattern: /admin(.*)
-            context: user
-            provider: sonata_user_bundle
-            form_login:
-                login_path: app_admin_login #app_admin_login sonata_user_admin_security_login
-                check_path: app_admin_login #app_login_client sonata_user_admin_security_check
-                default_target_path: sonata_admin_dashboard
-            logout:
-                path: sonata_user_admin_security_logout #app_admin_logout  sonata_user_admin_security_logout
-                target: sonata_user_admin_security_login #app_admin_login
-            remember_me:
-                secret: '%env(APP_SECRET)%'
-                lifetime: 2629746
-                path: /admin
-            entry_point: App\Security\UserSonataAuthenticator
-            custom_authenticator: App\Security\UserSonataAuthenticator
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -103,7 +99,7 @@ security:
         - { path: ^/admin/check-email, role: PUBLIC_ACCESS }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/admin/reset/.*$, role: PUBLIC_ACCESS }
-        - { path: ^/admin/dashboard, role: ROLE_SPECIAL_USER }
+        - { path: ^/admin/dashboard, role: ROLE_ADMIN }
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # Change these rules to adapt them to you needs

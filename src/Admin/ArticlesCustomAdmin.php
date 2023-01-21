@@ -31,10 +31,12 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+use Sonata\PageBundle\Admin\PageAdmin;
+
 final class ArticlesCustomAdmin extends AbstractAdmin
 {
 
-    protected $classnameLabel = 'Page';
+    protected $classnameLabel = 'Articles';
 
     private PageManagerInterface $pageManager;
 
@@ -136,18 +138,61 @@ final class ArticlesCustomAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $filter
-            ->add('id')
+        $filter          
+        ->add('site')
+        //->addIdentifier('name')
+        ->add('type', null, ['field_type' => PageTypeChoiceType::class])
+        ->add('pageAlias')
+        ->add('parent')
+        ->add('edited')
+        ->add('hybrid', CallbackFilter::class, [
+            'callback' => static function (ProxyQueryInterface $queryBuilder, string $alias, string $field, array $data): void {
+                $builder = $queryBuilder->getQueryBuilder();
+
+                if (\in_array($data['value'], ['hybrid', 'cms'], true)) {
+                    $builder->andWhere(sprintf('%s.routeName %s :routeName', $alias, 'cms' === $data['value'] ? '=' : '!='));
+                    $builder->setParameter('routeName', PageInterface::PAGE_ROUTE_CMS_NAME);
+                }
+            },
+            'field_options' => [
+                'required' => false,
+                'choices' => [
+                    'hybrid' => 'hybrid',
+                    'cms' => 'cms',
+                ],
+                'choice_translation_domain' => 'SonataPageBundle',
+            ],
+            'field_type' => ChoiceType::class,
+        ]);
+        /*    ->add('id')
             ->add('title')
             ->add('baniere_url')
             ->add('content')
             ->add('enabled')
+        */
             ;
     }
 
     protected function configureListFields(ListMapper $list): void
     {
-        $list
+        $list 
+        ->add('hybrid', null, ['template' => '@SonataPage/PageAdmin/field_hybrid.html.twig'])
+        ->addIdentifier('name')
+        ->add('type')
+        ->add('pageAlias')
+        ->add('site', null, [
+            'sortable' => 'site.name',
+        ])
+        ->add('decorate', null, ['editable' => true])
+        ->add('enabled', null, ['editable' => true])
+        ->add('edited', null, ['editable' => true])
+        ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
+            'translation_domain' => 'SonataAdminBundle',
+            'actions' => [
+                'edit' => [],
+            ],
+        ])
+        /*
             ->add('id')
             ->add('title')
             ->add('baniere_url')
@@ -159,11 +204,129 @@ final class ArticlesCustomAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        */
+        ;
     }
 
     protected function configureFormFields(FormMapper $form): void
     {
+        
+        $form
+             ->with('main', ['class' => 'col-md-6'])->end()
+             ->with('seo', ['class' => 'col-md-6'])->end()
+             ->with('advanced', ['class' => 'col-md-6'])->end();
+
+        $page = $this->hasSubject() ? $this->getSubject() : null;
+        $site = null !== $page ? $page->getSite() : null;
+
+        if (null === $page || (!$page->isInternal() && !$page->isError())) {
+            $form
+                ->with('main')
+                    ->add('url', TextType::class, ['attr' => ['readonly' => true]])
+                ->end();
+        }
+
+        if (null !== $page && null === $page->getId()) {
+            $form
+                ->with('main')
+                   // ->add('site', null, ['required' => true, 'attr' => ['readonly' => true]])
+                    ->add('site', EntityType::class, [
+                        'required' => true,
+                        'class'    => SonataPageSite::class,//SonataPageSite::class,
+                        'expanded' => true,
+                         //'multiple' => true   
+                          ])
+                ->end();
+        }
+
+        $form
+            ->with('main')
+                ->add('name', null, ['help' => 'help_page_name'])
+                ->add('enabled', null, ['required' => false])
+                ->add('position')
+            ->end();
+
+        if (null !== $page && !$page->isInternal()) {
+            $form
+                ->with('main')
+                    ->add('type', PageTypeChoiceType::class, ['required' => false])
+                ->end();
+        }
+
+        $form
+            ->with('main')
+                ->add('templateCode', TemplateChoiceType::class, ['required' => true])
+            ->end();
+
+        if (null === $page || null === $page->getParent() || null === $page->getId()) {
+            $form
+                ->with('main')
+                    ->add('parent', PageSelectorType::class, [
+                        'page' => $page,
+                        'site' => $site,
+                        'model_manager' => $this->getModelManager(),
+                        'class' => $this->getClass(),
+                        'required' => false,
+                        'filter_choice' => ['hierarchy' => 'root'],
+                    ], [
+                        'admin_code' => $this->getCode(),
+                        'link_parameters' => [
+                            'siteId' => null !== $site ? $site->getId() : null,
+                        ],
+                    ])
+                ->end();
+        }
+
+        if (null === $page || !$page->isDynamic()) {
+            $form
+                ->with('main')
+                    ->add('pageAlias', null, ['required' => false])
+                    ->add('parent', PageSelectorType::class, [
+                        'page' => $page,
+                        'site' => $site,
+                        'model_manager' => $this->getModelManager(),
+                        'class' => $this->getClass(),
+                        'filter_choice' => ['request_method' => 'all'],
+                        'required' => false,
+                    ], [
+                        'admin_code' => $this->getCode(),
+                        'link_parameters' => [
+                            'siteId' => null !== $site ? $site->getId() : null,
+                        ],
+                    ])
+                ->end();
+        }
+
+        if (null === $page || !$page->isHybrid()) {
+            $form
+                ->with('seo')
+                    ->add('slug', TextType::class, ['required' => false])
+                    ->add('customUrl', TextType::class, ['required' => false])
+                ->end();
+        }
+
+        $form
+            ->with('seo', ['collapsed' => true])
+                ->add('title', null, ['required' => false])
+                ->add('metaKeyword', TextareaType::class, ['required' => false])
+                ->add('metaDescription', TextareaType::class, ['required' => false])
+            ->end();
+
+        if (null !== $page && !$page->isCms()) {
+            $form
+                ->with('advanced', ['collapsed' => true])
+                    ->add('decorate', null, ['required' => false])
+                ->end();
+        }
+
+        $form
+            ->with('advanced', ['collapsed' => true])
+                ->add('javascript', null, ['required' => false])
+                ->add('stylesheet', null, ['required' => false])
+                ->add('rawHeaders', null, ['required' => false])
+            ->end();
+        /*
 
         $form
         ->with('main', ['class' => 'col-md-6'])->end()
@@ -246,7 +409,7 @@ final class ArticlesCustomAdmin extends AbstractAdmin
                        ],
                    ])
                ->end();
-        */
+        *//*2
        }
 
        if (null === $page || !$page->isDynamic()) {
@@ -266,7 +429,7 @@ final class ArticlesCustomAdmin extends AbstractAdmin
                            'siteId' => null !== $site ? $site->getId() : null,
                        ],
                    ])
-                   */
+                   *//*3
                ->end();
        }
 
@@ -370,11 +533,85 @@ final class ArticlesCustomAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('id')
+          /*  ->add('id')
             ->add('title')
             ->add('baniere_url')
             ->add('content')
             ->add('enabled')
+            */
+            
+            ->add('site')
+            ->add('routeName')
+            ->add('pageAlias')
+            ->add('type')
+            ->add('enabled')
+            ->add('decorate')
+            ->add('name')
+            ->add('slug')
+            ->add('customUrl')
+            ->add('edited');
             ;
     }
+/*
+    // Observation de configure tabmenu
+    protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
+    {
+        if (null === $childAdmin && 'edit' !== $action) {
+            return;
+        }
+
+        if (!$this->hasRequest()) {
+            return;
+        }
+
+        $admin = $this->isChild() ? $this->getParent() : $this;
+
+        $id = $admin->getRequest()->get('id');
+
+        $menu->addChild(
+            'sidemenu.link_edit_page',
+            $admin->generateMenuUrl('edit', ['id' => $id])
+        );
+
+        $menu->addChild(
+            'sidemenu.link_compose_page',
+            $admin->generateMenuUrl('compose', ['id' => $id])
+        );
+
+        $menu->addChild(
+            'sidemenu.link_list_blocks',
+            $admin->generateMenuUrl('sonata.page.admin.block.list', ['id' => $id])
+        );
+
+        $menu->addChild(
+            'sidemenu.link_list_snapshots',
+            $admin->generateMenuUrl('sonata.page.admin.snapshot.list', ['id' => $id])
+        );
+
+        $page = $this->getSubject();
+        if (!$page->isHybrid() && !$page->isInternal()) {
+            try {
+                $path = $page->getUrl();
+                $site = $page->getSite();
+
+                if (null !== $site) {
+                    $relativePath = $site->getRelativePath();
+
+                    if (!\in_array($relativePath, [null, '/'], true)) {
+                        $path = $relativePath.$path;
+                    }
+                }
+
+                $menu->addChild('view_page', [
+                    'uri' => $this->getRouteGenerator()->generate('page_slug', [
+                        'path' => $path,
+                    ]),
+                ]);
+            } catch (\Exception $e) {
+                // avoid crashing the admin if the route is not setup correctly
+                // throw $e;
+            }
+        }
+    }
+*/
 }

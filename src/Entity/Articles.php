@@ -20,9 +20,9 @@ class Articles extends BasePage //Page
     protected  $id ;
 
     //My custom field
-    #[ORM\Column(length: 255, nullable: true)]
+/*    #[ORM\Column(length: 255, nullable: true)]
     private ?string $baniere_url = null;
-
+/*
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
@@ -34,18 +34,22 @@ class Articles extends BasePage //Page
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?UserSonata $autheur = null;
-
+*/
 
     public function __construct()
     {
+
+        parent::__construct();
+        //Page::__construct();
         $this->categorie = new ArrayCollection();
+       // $this->children = new ArrayCollection();
     }
 
     public function __toString():string
     {
         return $this->title;
     }
-
+/*
     public function getId(): ?int
     {
         return $this->id;
@@ -92,10 +96,13 @@ class Articles extends BasePage //Page
 
         return $this;
     }
+    
+    
 
     /**
      * @return Collection<int, categories>
      */
+    /*
    public function getCategorie(): Collection
     {
         return $this->categorie;
@@ -128,11 +135,13 @@ class Articles extends BasePage //Page
         return $this->autheur;
     }
 
-    public function setAutheur(/*?User*/?UserSonata $autheur): self
+    public function setAutheur(/*?User*//*?UserSonata $autheur): self
     {
         $this->autheur = $autheur;
 
         return $this;
     }
+    */
+    
     
 }

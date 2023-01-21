@@ -40,7 +40,7 @@ class MenuBuilder
             // create a menu item with drop-down
             $menu->addChild('Administration')->setAttribute('class', 'nav-item');
             $menu['Administration']->addChild('S inscrire', array('route' => 'app_admin_register'));
-            $menu['Administration']->addChild('Se Conecter', array('route' => 'app_admin_register'));
+            $menu['Administration']->addChild('Se Conecter', array('route' => 'app_admin_login'));
             $menu['Administration']->setChildrenAttribute('class', 'dropdown-menu');
  
 

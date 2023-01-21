@@ -28,7 +28,7 @@ class UserSonataAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        dd('authenticate');
+       // dd('authenticate');
         $email = $request->request->get('email', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);

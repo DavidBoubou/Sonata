@@ -28,10 +28,10 @@ class UserSonata  extends BaseUser
 
     #[ORM\Column(type: 'boolean')]
     protected $isVerified = false;
-
+/*
     #[ORM\OneToMany(mappedBy: 'autheur', targetEntity: Articles::class)]
     private Collection $articles;
-
+*/
     //protected ?string $plainPassword = null;
     
     public function getId(): ?int
@@ -128,10 +128,10 @@ class UserSonata  extends BaseUser
         return $this->updatedAt;
     }
 
-    /**
+ /*   /**
      * @return Collection<int, Articles>
      */
-    public function getArticles(): Collection
+ /*   public function getArticles(): Collection
     {
         return $this->articles;
     }
@@ -145,6 +145,7 @@ class UserSonata  extends BaseUser
 
         return $this;
     }
+    */
 /*
     public function prePersist(): void
     {

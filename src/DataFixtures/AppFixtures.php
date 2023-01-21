@@ -8,6 +8,7 @@ use App\Entity\Articles;
 use App\Entity\User;
 use App\Entity\Baniere;
 use App\Entity\Categories;
+use Sonata\PageBundle\Entity\BaseSite;
 
 class AppFixtures extends Fixture
 {
@@ -50,6 +51,18 @@ class AppFixtures extends Fixture
             }
 
         //créer un site fixture
+        $site = new BaseSite();
+        $site->setName('webgroup')
+                ->setTitle('webgroup')
+                ->setHost('127.0.0.1:8000')
+                ->setLocale('fr')
+                ->setEnabledFrom( )
+                ->setEnabledTo()
+                ->setIsDefault(true)
+                ->setRelativePath('/public//')
+                ->setEnabled(true);
+        $manager->persist($site);
+        $manager->flush();
 
         //créer la SEO
 

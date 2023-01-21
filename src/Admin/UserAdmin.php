@@ -25,11 +25,12 @@ final class UserAdmin extends AbstractAdmin
             $collection->remove('delete');
 
     }
-
+/*
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'utilisateurs';
     }
+    */
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
@@ -56,14 +57,14 @@ final class UserAdmin extends AbstractAdmin
             ->add('email')           
             ->add('password')
             ->add('adresse')
-           /* ->with('roles', ['class' => 'col-md-8'])
-            ->add('realRoles', RolesMatrixType::class, [
-                'label' => false,
-                'multiple' => true,
-                'required' => false,
-            ])
+            ->with('roles', ['class' => 'col-md-8'])
+                ->add('roles', RolesMatrixType::class, [
+                    'label' => false,
+                    'multiple' => true,
+                    'required' => false,
+                ])
             ->end();
-            */
+            
             ;
     }
 
@@ -71,7 +72,7 @@ final class UserAdmin extends AbstractAdmin
     {
         $show
             ->add('email')
-         //   ->add('roles')
+            ->add('roles')
             ->add('password')
             ->add('adresse')
             ;

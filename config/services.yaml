@@ -48,7 +48,7 @@ services:
     admin.user:
         class: App\Admin\UserAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User, show_in_roles_matrix: true }
+            - { name: sonata.admin, model_class: App\Entity\UserSonata, controller: ~, manager_type: orm, group: admin, label: User, show_in_roles_matrix: true }
     
     # Service PageBundle
     admin.page:
@@ -110,6 +110,7 @@ services:
             - { name: sonata.admin.extension,   
                 target: admin.articles 
                  }
+
 
     # Controlleur AbstractController
     App\Admin\Controller\:

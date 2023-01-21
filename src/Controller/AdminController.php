@@ -36,22 +36,22 @@ class AdminController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
-             die("getUser".$this->getUser());
              return $this->redirectToRoute('sonata_admin_dashboard');
          }
-        // dd( $authenticationUtils);
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/client-login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        //return $this->render('security/client-login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/admin-login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
 
-    #[Route('/admin/register', name: 'app_admin_register')]
+    #[Route('/ad/register', name: 'app_admin_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
     {
+        //die('This is a die page');
         // This method returns instead the "customer" entity manager
         $customerEntityManager = $doctrine;//->getManager('custom');
 
@@ -72,19 +72,12 @@ class AdminController extends AbstractController
                 )
             );
 
-            //$date =  new \DateTime('@'.strtotime('now'));
-            //$user->prePersist();
-            //$user->preUpdate();
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            //$customerEntityManager->persist($user);
-            //$customerEntityManager->flush();
-
-
             // generate a signed url and email it to the user
-            /*$this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+      /*      $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@gmail.com', 'no-reply-bethannie'))
                     ->to($user->getEmail())
