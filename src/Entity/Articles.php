@@ -20,12 +20,12 @@ class Articles extends BasePage //Page
     protected  $id ;
 
     //My custom field
-/*    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $baniere_url = null;
-/*
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
-
+/*
     #[ORM\OneToMany(mappedBy: 'articles', targetEntity: Categories::class)]
     private Collection $categorie;
 
@@ -38,18 +38,15 @@ class Articles extends BasePage //Page
 
     public function __construct()
     {
-
         parent::__construct();
-        //Page::__construct();
-        $this->categorie = new ArrayCollection();
-       // $this->children = new ArrayCollection();
+        //$this->categorie = new ArrayCollection();
     }
 
     public function __toString():string
     {
         return $this->title;
     }
-/*
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,7 +95,7 @@ class Articles extends BasePage //Page
     }
     
     
-
+/*
     /**
      * @return Collection<int, categories>
      */
@@ -141,7 +138,7 @@ class Articles extends BasePage //Page
 
         return $this;
     }
+    
+    
     */
-    
-    
 }

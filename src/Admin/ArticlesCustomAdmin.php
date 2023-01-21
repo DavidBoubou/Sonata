@@ -140,6 +140,7 @@ final class ArticlesCustomAdmin extends AbstractAdmin
     {
         $filter          
         ->add('site')
+        ->add('content')
         //->addIdentifier('name')
         ->add('type', null, ['field_type' => PageTypeChoiceType::class])
         ->add('pageAlias')
@@ -192,6 +193,7 @@ final class ArticlesCustomAdmin extends AbstractAdmin
                 'edit' => [],
             ],
         ])
+        ->add('content')
         /*
             ->add('id')
             ->add('title')
@@ -295,6 +297,12 @@ final class ArticlesCustomAdmin extends AbstractAdmin
                             'siteId' => null !== $site ? $site->getId() : null,
                         ],
                     ])
+                    ->add('content', SimpleFormatterType::class, [
+                        'required'=>true,
+                        'format' => 'richhtml',
+                        'ckeditor_context' => 'default',
+                        'ckeditor_image_format' => 'big',
+                    ])
                 ->end();
         }
 
@@ -328,30 +336,6 @@ final class ArticlesCustomAdmin extends AbstractAdmin
             ->end();
         /*
 
-        $form
-        ->with('main', ['class' => 'col-md-6'])->end()
-        ->with('seo', ['class' => 'col-md-6'])->end()
-        ->with('advanced', ['class' => 'col-md-6'])->end();
-
-       $page = $this->hasSubject() ? $this->getSubject() : null;
-       $site = null !== $page ? $page->getSite() : null;
-
-        //si la page n'est pas créer et qu'il n y a pas d erreur
-       if (null === $page || (!$page->isInternal() && !$page->isError())) {
-           $form
-               ->with('main')
-                   ->add('url', TextType::class, ['attr' => ['readonly' => true]])
-               ->end();
-       }
-
-       //Si la page existe
-       if (null !== $page && null === $page->getId()) {
-           $form
-               ->with('main')
-                   ->add('site', null, ['required' => true, 'attr' => ['readonly' => true]])
-               ->end();
-       }
-
        $form
                 ->with('main')
                 ->add('title')
@@ -379,39 +363,6 @@ final class ArticlesCustomAdmin extends AbstractAdmin
                ->add('position')
            ->end();
 
-        //si la page est créer et qu'elle est interne
-       if (null !== $page && !$page->isInternal()) {
-           $form
-               ->with('main')
-                   ->add('type', PageTypeChoiceType::class, ['required' => false])
-               ->end();
-       }
-
-       $form
-           ->with('main')
-               ->add('templateCode', TemplateChoiceType::class, ['required' => true])
-           ->end();
-
-       if (null === $page || null === $page->getParent() || null === $page->getId()) {
-         /*  $form
-               ->with('main')
-                   ->add('parent', PageSelectorType::class, [
-                       'page' => $page,
-                       'site' => $site,
-                       'model_manager' => $this->getModelManager(),
-                       'class' => $this->getClass(),
-                       'required' => false,
-                       'filter_choice' => ['hierarchy' => 'root'],
-                   ], [
-                       'admin_code' => $this->getCode(),
-                       'link_parameters' => [
-                           'siteId' => null !== $site ? $site->getId() : null,
-                       ],
-                   ])
-               ->end();
-        *//*2
-       }
-
        if (null === $page || !$page->isDynamic()) {
            $form
                ->with('main')
@@ -433,25 +384,6 @@ final class ArticlesCustomAdmin extends AbstractAdmin
                ->end();
        }
 
-       if (null === $page || !$page->isHybrid()) {
-           $form
-               ->with('seo')
-                   ->add('slug', TextType::class, ['required' => false])
-                   ->add('customUrl', TextType::class, ['required' => false])
-               ->end();
-       }
-
-       $form
-           ->with('seo', ['collapsed' => true])
-               ->add('metaKeyword', TextareaType::class, ['required' => false])
-               ->add('metaDescription', TextareaType::class, ['required' => false])
-           ->end();
-
-       if (null !== $page && !$page->isCms()) {
-           $form
-               ->with('advanced', ['collapsed' => true])
-                   ->add('decorate', null, ['required' => false])
-               ->end();
        }
 
         /*
@@ -536,9 +468,9 @@ final class ArticlesCustomAdmin extends AbstractAdmin
           /*  ->add('id')
             ->add('title')
             ->add('baniere_url')
-            ->add('content')
             ->add('enabled')
             */
+            ->add('content')
             
             ->add('site')
             ->add('routeName')
