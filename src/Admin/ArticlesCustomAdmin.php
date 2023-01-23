@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin;
 use  App\Entity\SonataPageSite;
+use  App\Entity\Categories;
+use  App\Entity\UserSonata;
 use  Sonata\PageBundle\Model\Site;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -165,13 +167,6 @@ final class ArticlesCustomAdmin extends AbstractAdmin
             ],
             'field_type' => ChoiceType::class,
         ]);
-        /*    ->add('id')
-            ->add('title')
-            ->add('baniere_url')
-            ->add('content')
-            ->add('enabled')
-        */
-            ;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -187,27 +182,25 @@ final class ArticlesCustomAdmin extends AbstractAdmin
         ->add('decorate', null, ['editable' => true])
         ->add('enabled', null, ['editable' => true])
         ->add('edited', null, ['editable' => true])
-        ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
+   /*     ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
             'translation_domain' => 'SonataAdminBundle',
             'actions' => [
                 'edit' => [],
             ],
         ])
+    */
+        ->add('id')
+        ->add('title')
+        ->add('baniere_url')
         ->add('content')
-        /*
-            ->add('id')
-            ->add('title')
-            ->add('baniere_url')
-            ->add('content')
-            ->add('enabled')
-            ->add(ListMapper::NAME_ACTIONS, null, [
-                'actions' => [
-                    'show' => [],
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ])
-        */
+        ->add(ListMapper::NAME_ACTIONS, null, [
+            'actions' => [
+                'show' => [],
+                'edit' => [],
+                'delete' => [],
+            ],
+        ])
+        
         ;
     }
 
@@ -297,12 +290,29 @@ final class ArticlesCustomAdmin extends AbstractAdmin
                             'siteId' => null !== $site ? $site->getId() : null,
                         ],
                     ])
+                    
+                    ->add('baniere_url')
                     ->add('content', SimpleFormatterType::class, [
                         'required'=>true,
                         'format' => 'richhtml',
                         'ckeditor_context' => 'default',
                         'ckeditor_image_format' => 'big',
-                    ])
+                    ])                    
+                    ->add('categorie', EntityType::class, [
+                        'required' => false,
+                        'class'    => Categories::class,
+                        'expanded' => true,
+                         'multiple' => true   
+                          ])
+                          /*
+                    ->add('autheur', EntityType::class, [
+                        'required' => true,
+                        'class'    => UserSonata::class,
+                        'expanded' => true,
+                        'empty_data'=> $this->getUser()
+                         //'multiple' => true   
+                          ])
+                          */
                 ->end();
         }
 
@@ -337,52 +347,11 @@ final class ArticlesCustomAdmin extends AbstractAdmin
         /*
 
        $form
-                ->with('main')
-                ->add('title')
-                ->add('site', EntityType::class, [
-                      'class' => SonataPageSite::class,//SonataPageSite::class,
-                        'expanded' => true,
-                       //'multiple' => true   
-                        ])
-                        
-                ->add('routeName')
-                ->add('pageAlias')
-                ->add('type')
-                ->add('baniere_url')
-                ->add('decorate')
-                ->add('name')
-                ->add('edited')
                 ->add('content', SimpleFormatterType::class, [
                     'format' => 'richhtml',
                     'ckeditor_context' => 'default',
                     'ckeditor_image_format' => 'big',
                 ])
-                ->add('enabled')
-               ->add('name', null, ['help' => 'help_page_name'])
-               ->add('url')
-               ->add('position')
-           ->end();
-
-       if (null === $page || !$page->isDynamic()) {
-           $form
-               ->with('main')
-                   ->add('pageAlias', null, ['required' => false])
-                 /*  ->add('parent', PageSelectorType::class, [
-                       'page' => $page,
-                       'site' => $site,
-                       'model_manager' => $this->getModelManager(),
-                       'class' => $this->getClass(),
-                       'filter_choice' => ['request_method' => 'all'],
-                       'required' => false,
-                   ], [
-                       'admin_code' => $this->getCode(),
-                       'link_parameters' => [
-                           'siteId' => null !== $site ? $site->getId() : null,
-                       ],
-                   ])
-                   *//*3
-               ->end();
-       }
 
        }
 
@@ -465,13 +434,10 @@ final class ArticlesCustomAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-          /*  ->add('id')
+            ->add('id')
             ->add('title')
             ->add('baniere_url')
-            ->add('enabled')
-            */
             ->add('content')
-            
             ->add('site')
             ->add('routeName')
             ->add('pageAlias')
@@ -484,6 +450,7 @@ final class ArticlesCustomAdmin extends AbstractAdmin
             ->add('edited');
             ;
     }
+
 /*
     // Observation de configure tabmenu
     protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void

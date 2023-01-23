@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Sonata\PageBundle\Entity\BasePage;
-use Sonata\PageBundle\Model\Page;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
@@ -16,22 +15,17 @@ class Articles extends BasePage //Page
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type:"integer")]
-    //private ?int $id = null;
     protected  $id ;
 
-    //My custom field
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $baniere_url = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
-/*
+
     #[ORM\OneToMany(mappedBy: 'articles', targetEntity: Categories::class)]
     private Collection $categorie;
-
- //   #[ORM\ManyToOne(inversedBy: 'articles')]
- //   private ?User $autheur = null;
-
+/*
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?UserSonata $autheur = null;
 */
@@ -39,7 +33,7 @@ class Articles extends BasePage //Page
     public function __construct()
     {
         parent::__construct();
-        //$this->categorie = new ArrayCollection();
+        $this->categorie = new ArrayCollection();
     }
 
     public function __toString():string
@@ -95,11 +89,10 @@ class Articles extends BasePage //Page
     }
     
     
-/*
+
     /**
      * @return Collection<int, categories>
      */
-    /*
    public function getCategorie(): Collection
     {
         return $this->categorie;
@@ -126,19 +119,19 @@ class Articles extends BasePage //Page
 
         return $this;
     }
-
-    public function getAutheur(): ?UserSonata //User
+/*
+    public function getAutheur(): ?UserSonata 
     {
         return $this->autheur;
     }
 
-    public function setAutheur(/*?User*//*?UserSonata $autheur): self
+    public function setAutheur(?UserSonata $autheur): self
     {
         $this->autheur = $autheur;
 
         return $this;
     }
+   */ 
     
     
-    */
 }

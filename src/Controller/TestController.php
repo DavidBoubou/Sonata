@@ -19,6 +19,10 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
+use App\Security\EmailVerifier;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
+
 class TestController extends AbstractController
 {
     #[Route('/test', name: 'app_test')]
@@ -135,6 +139,33 @@ class TestController extends AbstractController
         return $this->render('test/seo.html.twig', [
             'controller_name' => 'TestController',
         ]);
+        
+    }
+
+    private EmailVerifier $emailVerifier;
+
+    public function __construct(EmailVerifier $emailVerifier)
+    {
+        $this->emailVerifier = $emailVerifier;
+    }
+
+
+    //Test du SEO
+    #[Route('/test/envoie_email')]
+    public function email(): Response
+    {
+            // generate a signed url and email it to the user
+            $user = new UserSonata();
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                (new TemplatedEmail())
+                    ->from(new Address('no-reply@gmail.com', 'no-reply-bethannie'))
+                    ->to($user->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+            
+
+        dd('envoie d email test');
         
     }
 }
