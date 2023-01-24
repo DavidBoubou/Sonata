@@ -179,6 +179,22 @@
             "./config/packages/sonata_block.yaml"
         ]
     },
+    "sonata-project/classification-bundle": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.7",
+            "ref": "e79fbb2e8658677e5d5d9199db7d2735332c4b7d"
+        },
+        "files": [
+            "./config/packages/sonata_classification.yaml",
+            "./src/Entity/SonataClassificationCategory.php",
+            "./src/Entity/SonataClassificationCollection.php",
+            "./src/Entity/SonataClassificationContext.php",
+            "./src/Entity/SonataClassificationTag.php"
+        ]
+    },
     "sonata-project/doctrine-extensions": {
         "version": "2.0",
         "recipe": {

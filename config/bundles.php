@@ -38,4 +38,5 @@ return [
     Scheb\TwoFactorBundle\SchebTwoFactorBundle::class => ['all' => true],
     Sonata\TranslationBundle\SonataTranslationBundle::class => ['all' => true],
     Knp\DoctrineBehaviors\DoctrineBehaviorsBundle::class => ['all' => true],
+    Sonata\ClassificationBundle\SonataClassificationBundle::class => ['all' => true],
 ];
