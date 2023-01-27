@@ -4120,7 +4120,7 @@
         },
         {
             "name": "scheb/2fa-backup-code",
-            "version": "v6.4.0",
+            "version": "v6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-backup-code.git",
@@ -4163,13 +4163,13 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-backup-code/tree/v6.4.0"
+                "source": "https://github.com/scheb/2fa-backup-code/tree/v6.5.0"
             },
             "time": "2022-12-10T15:20:09+00:00"
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v6.4.0",
+            "version": "v6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
@@ -4230,13 +4230,13 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v6.4.0"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v6.5.0"
             },
             "time": "2022-12-10T15:20:09+00:00"
         },
         {
             "name": "scheb/2fa-email",
-            "version": "v6.4.0",
+            "version": "v6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-email.git",
@@ -4279,13 +4279,13 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-email/tree/v6.4.0"
+                "source": "https://github.com/scheb/2fa-email/tree/v6.5.0"
             },
             "time": "2022-12-10T15:20:09+00:00"
         },
         {
             "name": "scheb/2fa-google-authenticator",
-            "version": "v6.4.0",
+            "version": "v6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-google-authenticator.git",
@@ -4330,13 +4330,13 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.4.0"
+                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.5.0"
             },
             "time": "2022-12-10T15:20:09+00:00"
         },
         {
             "name": "scheb/2fa-totp",
-            "version": "v6.4.0",
+            "version": "v6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-totp.git",
@@ -4381,26 +4381,26 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-totp/tree/v6.4.0"
+                "source": "https://github.com/scheb/2fa-totp/tree/v6.5.0"
             },
             "time": "2022-12-10T15:20:09+00:00"
         },
         {
             "name": "scheb/2fa-trusted-device",
-            "version": "v6.4.0",
+            "version": "v6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-trusted-device.git",
-                "reference": "1c9a793779a0234120c6eb445fa76e9b754e547a"
+                "reference": "b918e67c58d105c0753f59e0b1c7ca4621358f82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-trusted-device/zipball/1c9a793779a0234120c6eb445fa76e9b754e547a",
-                "reference": "1c9a793779a0234120c6eb445fa76e9b754e547a",
+                "url": "https://api.github.com/repos/scheb/2fa-trusted-device/zipball/b918e67c58d105c0753f59e0b1c7ca4621358f82",
+                "reference": "b918e67c58d105c0753f59e0b1c7ca4621358f82",
                 "shasum": ""
             },
             "require": {
-                "lcobucci/clock": "^2.0",
+                "lcobucci/clock": "^2.0 || ^3.0",
                 "lcobucci/jwt": "^4.0",
                 "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
                 "scheb/2fa-bundle": "self.version"
@@ -4432,9 +4432,9 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-trusted-device/tree/v6.4.0"
+                "source": "https://github.com/scheb/2fa-trusted-device/tree/v6.5.0"
             },
-            "time": "2022-12-10T15:20:09+00:00"
+            "time": "2023-01-21T11:16:02+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -11228,16 +11228,16 @@
         },
         {
             "name": "symfony/ux-chartjs",
-            "version": "v2.6.1",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-chartjs.git",
-                "reference": "1f8d1fe38e5ffc60a4afb0a5680bd77f0e3503f8"
+                "reference": "7f486038d828fd893b2f769e8e8954b7cd028691"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/1f8d1fe38e5ffc60a4afb0a5680bd77f0e3503f8",
-                "reference": "1f8d1fe38e5ffc60a4afb0a5680bd77f0e3503f8",
+                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/7f486038d828fd893b2f769e8e8954b7cd028691",
+                "reference": "7f486038d828fd893b2f769e8e8954b7cd028691",
                 "shasum": ""
             },
             "require": {
@@ -11289,7 +11289,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-chartjs/tree/v2.6.1"
+                "source": "https://github.com/symfony/ux-chartjs/tree/v2.7.0"
             },
             "funding": [
                 {
@@ -11305,20 +11305,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-22T21:09:47+00:00"
+            "time": "2023-01-19T15:55:42+00:00"
         },
         {
             "name": "symfony/ux-dropzone",
-            "version": "v2.6.1",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-dropzone.git",
-                "reference": "b213ca1e0b4f4f0814229c87ed5ff88b311400af"
+                "reference": "97a1da7ab99cc1a6c5bf2f5c0cb606a623cf4458"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/b213ca1e0b4f4f0814229c87ed5ff88b311400af",
-                "reference": "b213ca1e0b4f4f0814229c87ed5ff88b311400af",
+                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/97a1da7ab99cc1a6c5bf2f5c0cb606a623cf4458",
+                "reference": "97a1da7ab99cc1a6c5bf2f5c0cb606a623cf4458",
                 "shasum": ""
             },
             "require": {
@@ -11366,7 +11366,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-dropzone/tree/v2.6.1"
+                "source": "https://github.com/symfony/ux-dropzone/tree/v2.7.0"
             },
             "funding": [
                 {
@@ -11382,7 +11382,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-22T21:09:47+00:00"
+            "time": "2023-01-19T15:55:42+00:00"
         },
         {
             "name": "symfony/validator",
